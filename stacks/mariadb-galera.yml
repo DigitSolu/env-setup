@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  mariadb-galera:
+    image: bitnami/mariadb-galera:11.3
+    environment:
+      - MARIADB_GALERA_CLUSTER_BOOTSTRAP=yes
+      - MARIADB_GALERA_CLUSTER_NAME=galera
+      - MARIADB_GALERA_MARIABACKUP_USER=<backup_user>
+      - MARIADB_GALERA_MARIABACKUP_PASSWORD=<backup_user_password>
+      - MARIADB_ROOT_PASSWORD=<root_password>
+      - MARIADB_USER=<initial_user>
+      - MARIADB_PASSWORD=<initial_user_password>
+      - MARIADB_DATABASE=<initial_db>
+    volumes:
+      - mariadb_data:/bitnami/mariadb
+    ports:
+      - 3306:3306
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  mariadb_data:
